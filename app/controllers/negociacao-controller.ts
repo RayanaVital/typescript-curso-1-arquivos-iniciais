@@ -1,3 +1,4 @@
+import { WeekDay } from "../enums/week-day.js";
 import { Negociacao } from "../models/negociacao.js";
 import { Negociacoes } from "../models/negociacoes.js";
 import { MensagemView } from "../views/mensagem-view.js";
@@ -10,6 +11,8 @@ export class negociacaoController {
     private negociacoes = new Negociacoes;
     private negociacoesView = new NegociacoesView('#negociacoesView');
     private mensagemView = new MensagemView('#mensagemView');
+    private readonly SABADO = 6;
+    private readonly DOMINGO = 7;
 
 
     constructor(){
@@ -19,15 +22,24 @@ export class negociacaoController {
         this.negociacoesView.update(this.negociacoes);
     }
 
-    adiciona(): void {
+    public adiciona(): void {
         const negociacao = this.criaNegociacao();
+        if(!this.isUtilDay(negociacao.data)){
+            this.mensagemView.update('Apenas negociações em dias úteis são aceitas');
+            return;
+        }
         this.negociacoes.adiciona(negociacao);
-        this.negociacoesView.update(this.negociacoes);
-        this.mensagemView.update('Negociação adicionada com sucesso.')
         this.limparFormulario();
+        this.atualizaView()
+           
+        
     };
 
-    criaNegociacao(): Negociacao{
+    private isUtilDay(date: Date){
+        return date.getDay() > WeekDay.DOMINGO && date.getDay() < WeekDay.SABADO;
+    }
+
+    private criaNegociacao(): Negociacao{
         const exp = /-/g;
     const date = new Date(this.inputData.value.replace(exp, ','))
     const quantidade = parseInt(this.inputQuantidade.value);
@@ -39,12 +51,17 @@ export class negociacaoController {
         );
     }
 
-    limparFormulario(): void {
+    private limparFormulario(): void {
         this.inputData.value = '';
         this.inputQuantidade.value = '';
         this.inputValor.value = '';
         this.inputData.focus();
 
+    }
+
+    private atualizaView(): void {
+        this.negociacoesView.update(this.negociacoes);
+        this.mensagemView.update('Negociação adicionada com sucesso.')
     }
 }
 

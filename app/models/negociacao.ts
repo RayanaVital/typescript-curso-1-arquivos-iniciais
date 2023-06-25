@@ -14,4 +14,18 @@ export class Negociacao {
         return this.quantidade * this.valor;
     }
 
+    public static createOf(dateString: string, quantityString: string, valueString: string ): Negociacao{
+        const exp = /-/g;
+        const date = new Date(dateString.replace(exp, ','))
+        const quantidade = parseInt(quantityString);
+        const valor = parseInt(valueString);
+        return new Negociacao(
+            date, 
+            quantidade, 
+            valor
+            );
+        
+    }
+    //metodos estaticos podem ser chamados diretamente na classe sem ser estanciados
+
 }

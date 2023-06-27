@@ -5,7 +5,12 @@ export abstract class View<T> {
 
     //parametros opcionais não podem ser seguidos de parametros required, os required devem vir primeiro, seguidos dos opcionais
     constructor(seletor: string, escape?: boolean){
-        this.elemento = document.querySelector(seletor)
+        const elemento = document.querySelector(seletor);
+        if(elemento){
+            this.elemento = elemento as HTMLElement
+        } else {
+        throw Error (`Seletor ${seletor} não existe no DOM. Verifique.`)
+        }
         if(escape){
             this.escape = escape;
         }

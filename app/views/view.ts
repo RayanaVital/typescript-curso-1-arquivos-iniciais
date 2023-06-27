@@ -3,6 +3,7 @@ export abstract class View<T> {
     protected elemento : HTMLElement;
     private escape = false;
 
+    //parametros opcionais não podem ser seguidos de parametros required, os required devem vir primeiro, seguidos dos opcionais
     constructor(seletor: string, escape?: boolean){
         this.elemento = document.querySelector(seletor)
         if(escape){

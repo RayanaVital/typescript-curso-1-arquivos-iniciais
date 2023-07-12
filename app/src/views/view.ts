@@ -1,3 +1,5 @@
+import { logTimeExecution } from "../decorators/log-time-execution.js";
+
 export abstract class View<T> {
 
     protected elemento : HTMLElement;
@@ -16,12 +18,16 @@ export abstract class View<T> {
         }
     }
 
+    @logTimeExecution()
     public update(model: T): void {
+        const t1 = performance.now()
         let template = this.template(model);
         if(this.escape) {
             template = template.replace(/<script>[\s\S]*?<script>/, '')
         }
         this.elemento.innerHTML = this.template(model);
+        const t2 = performance.now()
+        console.log((t2-t1)/1000)
     }
 
     protected abstract template(model: T): string;  //metodo abstrato, não precisa ser definida na classe pai, porém precisa ser implementado na classe filha e deve ser definida pela classe filhas

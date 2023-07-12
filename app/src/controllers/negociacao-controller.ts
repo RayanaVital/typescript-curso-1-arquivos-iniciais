@@ -1,3 +1,4 @@
+import { logTimeExecution } from "../decorators/log-time-execution.js";
 import { WeekDay } from "../enums/week-day.js";
 import { Negociacao } from "../models/negociacao.js";
 import { Negociacoes } from "../models/negociacoes.js";
@@ -21,7 +22,7 @@ export class negociacaoController {
         this.inputValor = document.querySelector('#valor') as HTMLInputElement;
         this.negociacoesView.update(this.negociacoes);
     }
-
+    @logTimeExecution()
     public adiciona(): void {
         const negociacao = Negociacao.createOf(this.inputData.value,this.inputQuantidade.value,this.inputValor.value);
         if(!this.isUtilDay(negociacao.data)){

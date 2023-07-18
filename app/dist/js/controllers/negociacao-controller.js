@@ -13,7 +13,7 @@ import { NegociacoesView } from "../views/negociacoes-view.js";
 export class negociacaoController {
     constructor() {
         this.negociacoes = new Negociacoes;
-        this.negociacoesView = new NegociacoesView('#negociacoesView', true);
+        this.negociacoesView = new NegociacoesView('#negociacoesView');
         this.mensagemView = new MensagemView('#mensagemView');
         this.SABADO = 6;
         this.DOMINGO = 7;
